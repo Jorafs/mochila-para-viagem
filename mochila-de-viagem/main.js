@@ -1,23 +1,37 @@
-const itens = document.getElementById("nome")
-const numero = document.getElementById("quantidade")
 const form = document.getElementById("novoItem")
-const criaElemento = document.createElement('li')
-const criaQuantidade = document.createElement('strong');
-const lista = document.getElementById('lista')
+const lista = document.getElementById("lista")
+const itens = []
 
- form.addEventListener("submit" , (evento)=>{
- 	evento.preventDefault();
-	addItens(itens.value, numero.value)
- })
+form.addEventListener("submit", (evento) => {
+    evento.preventDefault()
 
- function addItens(nome, quantidade){
- 	criaElemento.classList.add('item')
+    const nome = evento.target.elements['nome']
+    const quantidade = evento.target.elements['quantidade']
 
- 	criaQuantidade.innerHTML = quantidade
+    criaElemento(nome.value, quantidade.value)
 
- 	criaElemento.appendChild(criaQuantidade)
- 	criaElemento.innerHTML += nome
+    nome.value = ""
+    quantidade.value = ""
+})
 
- 	lista.appendChild(criaElemento)
+function criaElemento(nome, quantidade) {
+    const novoItem = document.createElement('li')
+    novoItem.classList.add("item")
 
- }
+    const numeroItem = document.createElement('strong')
+    numeroItem.innerHTML = quantidade
+    novoItem.appendChild(numeroItem)
+
+    novoItem.innerHTML += nome
+
+    lista.appendChild(novoItem)
+
+    const itemAtual = {
+        "nome": nome,
+        "quantidade": quantidade
+    }
+
+    itens.push(itemAtual)
+
+    localStorage.setItem("item", JSON.stringify(itens))
+}
